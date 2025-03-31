@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <RelativeLayout
+        android:layout_marginTop="6dp"
+        android:id="@+id/rl_checkbg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            style="@style/ykfsdk_kf_checkbox"
+            android:id="@+id/mulit_checkbox"
+            android:textSize="15sp"
+            android:textColor="@color/ykfsdk_color_333333"
+            android:text="选择"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ykfsdk_ykf_xbot_form_item_height"
+            android:paddingLeft="8dp">
+        </CheckBox>
+    </RelativeLayout>
+
+
+</RelativeLayout>

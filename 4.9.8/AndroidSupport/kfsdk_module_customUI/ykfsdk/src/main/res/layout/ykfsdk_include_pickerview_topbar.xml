@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ykfsdk_pickerview_bg_topbar">
+
+    <android.widget.Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|left"
+        android:paddingLeft="@dimen/ykfsdk_pickerview_topbar_paddingleft"
+        android:paddingRight="@dimen/ykfsdk_pickerview_topbar_paddingright"
+        android:text="@string/ykfsdk_cancel"
+        android:textColor="?attr/ykfsdk_ykf_theme_color_default"
+        android:textSize="@dimen/ykfsdk_pickerview_topbar_btn_textsize" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/btnSubmit"
+        android:layout_toRightOf="@+id/btnCancel"
+        android:textColor="@color/ykfsdk_pickerview_topbar_title"
+        android:textSize="@dimen/ykfsdk_pickerview_topbar_title_textsize" />
+
+    <android.widget.Button
+        android:id="@id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|left"
+        android:paddingLeft="@dimen/ykfsdk_pickerview_topbar_paddingright"
+        android:paddingRight="@dimen/ykfsdk_pickerview_topbar_paddingleft"
+        android:text="@string/ykfsdk_ykf_confirm"
+        android:textColor="?attr/ykfsdk_ykf_theme_color_default"
+        android:textSize="@dimen/ykfsdk_pickerview_topbar_btn_textsize" />
+</RelativeLayout>

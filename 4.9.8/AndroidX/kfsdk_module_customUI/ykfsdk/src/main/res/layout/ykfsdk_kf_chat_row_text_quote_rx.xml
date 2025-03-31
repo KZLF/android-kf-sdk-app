@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/ykfsdk_bg_chat_referen"
+    android:paddingBottom="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:id="@+id/recover_content_tv_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:text="@string/ykfsdk_recover"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/recover_content_tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recover_content_tv_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:maxWidth="250dp"
+        android:paddingRight="15dp"
+        android:textSize="14sp"
+        tools:text="aaaaaaaaaaa342356756aa567567abcd56756756aaaaa66666:" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

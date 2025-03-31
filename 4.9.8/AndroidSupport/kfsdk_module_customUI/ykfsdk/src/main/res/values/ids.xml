@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="ykfsdk_fake_status_bar_view" type="id"/>
+    <item name="ykfsdk_offline_id_tag" type="id"/>
+    <item name="ykfsdk_offline_required_tag" type="id"/>
+</resources>

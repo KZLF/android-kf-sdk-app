@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <com.m7.imkfsdk.view.AlignTextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/ykfsdk_kf_selector_select_my_labels"
+        android:gravity="center"
+        android:maxEms="50"
+        android:ellipsize="end"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="宅男"
+        android:textColor="@drawable/ykfsdk_kf_selector_firstmine_text_color"
+        android:textSize="13sp"
+        >
+
+
+    </com.m7.imkfsdk.view.AlignTextView>
+</RelativeLayout>

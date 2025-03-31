@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <include
+        android:id="@+id/include_time"
+        layout="@layout/ykfsdk_ykf_chatitem_time" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/include_time"
+        android:layout_marginBottom="10dp">
+
+        <RelativeLayout
+            android:id="@+id/chart_to_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="48dp">
+
+            <ImageView
+                android:id="@+id/chatting_avatar_iv"
+                android:layout_width="@dimen/ykfsdk_head_avatar_size"
+                android:layout_height="@dimen/ykfsdk_head_avatar_size"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ykfsdk_kf_head_default_local" />
+
+            <RelativeLayout
+                android:id="@+id/chatto_content_layout"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_toLeftOf="@id/chatting_avatar_iv">
+
+                <FrameLayout
+                    android:id="@+id/chat_to_layout_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="4dp">
+
+                    <ImageView
+                        android:id="@+id/chat_content_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+
+                    <View
+                        android:id="@+id/view_floating_layer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#60666666"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/iv_play"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ykfsdk_ykf_ic_playvideo"
+                        android:visibility="visible" />
+
+                    <com.m7.imkfsdk.view.CircleProgressView
+                        android:id="@+id/chat_content_pb_progress1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:visibility="gone"
+                        app:ykfsdk_circleCorner="50dp"
+                        app:ykfsdk_startAngle="270" />
+
+                    <ProgressBar
+                        android:layout_marginBottom="1dp"
+                        android:id="@+id/chat_content_pb_progress"
+                        style="@style/ykfsdk_kf_update_progressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_alignBottom="@id/chat_content_iv"
+                        android:layout_gravity="bottom"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:visibility="visible" />
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <include
+                layout="@layout/ykfsdk_ykf_read_unreadtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/chatto_content_layout"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="2dp"
+                android:layout_toLeftOf="@id/chatto_content_layout" />
+
+            <ImageView
+                android:id="@+id/chatting_state_iv"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@id/chatto_content_layout"
+                android:background="@drawable/ykfsdk_kf_chat_failure_msgs"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/uploading_pb"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@id/chatto_content_layout"
+                android:indeterminateDrawable="@drawable/ykfsdk_progressbar_color" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

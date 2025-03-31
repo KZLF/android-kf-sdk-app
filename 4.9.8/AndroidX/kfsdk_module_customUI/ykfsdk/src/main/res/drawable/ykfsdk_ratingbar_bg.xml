@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background"
+        android:drawable="@drawable/ykfsdk_ic_in_star"></item>
+
+    <item android:id="@android:id/progress"
+        android:drawable="@drawable/ykfsdk_ic_in_star_true"></item>
+
+    <item android:id="@android:id/secondaryProgress"
+        android:drawable="@drawable/ykfsdk_ic_in_star_true"></item>
+</layer-list>

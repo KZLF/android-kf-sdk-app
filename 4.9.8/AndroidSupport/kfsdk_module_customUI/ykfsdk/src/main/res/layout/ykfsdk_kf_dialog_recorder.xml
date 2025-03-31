@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center"
+    android:background="@drawable/ykfsdk_kf_dialog_loading_bg"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:id="@+id/dialog_recorder_iv_rd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:src="@drawable/ykfsdk_recorder"/>
+        <ImageView
+            android:id="@+id/dialog_recorder_iv_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_toRightOf="@id/dialog_recorder_iv_rd"
+            android:src="@drawable/ykfsdk_kf_v1"/>
+        <TextView
+            android:id="@+id/dialog_recorder_tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:textSize="95sp"
+            android:textColor="@color/ykfsdk_all_white"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/ykfsdk_cancelsend"
+        android:textColor="#ffffff"
+        android:id="@+id/dialog_recorder_tv" />
+
+</LinearLayout>

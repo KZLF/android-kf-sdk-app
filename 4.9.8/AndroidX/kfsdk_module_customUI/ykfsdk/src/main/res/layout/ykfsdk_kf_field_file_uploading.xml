@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_marginLeft="30dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/ll_kf_upbg"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/ykfsdk_kf_dialog_loading_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/erp_field_file_upload_tv_filename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/ykfsdk_all_white"
+                android:textSize="15sp"
+                tools:text="文件文件名文件名文件名文件名文件名文件名文件名文件名名" />
+
+            <TextView
+                android:id="@+id/erp_field_file_upload_tv_filesize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/ykfsdk_all_white"
+                android:textSize="15sp"
+                tools:text="文件大文件文件大小大小文件大小小" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/erp_field_file_upload_tv_precent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="百分比"
+                android:textColor="@color/ykfsdk_all_white"
+                android:textSize="14sp" />
+
+            <ProgressBar
+                android:id="@+id/erp_field_file_upload_pb"
+                style="@style/ykfsdk_kf_update_progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/erp_field_file_upload_tv_precent" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_kf_closeup"
+        android:layout_alignTop="@+id/ll_kf_upbg"
+        android:layout_marginTop="-12dp"
+        android:layout_marginRight="-12dp"
+        android:layout_alignRight="@+id/ll_kf_upbg"
+        android:src="@drawable/ykfsdk_kf_icon_closeo"
+        android:layout_width="24dp"
+        android:layout_height="24dp">
+    </ImageView>
+</RelativeLayout>
+
+
+</RelativeLayout>

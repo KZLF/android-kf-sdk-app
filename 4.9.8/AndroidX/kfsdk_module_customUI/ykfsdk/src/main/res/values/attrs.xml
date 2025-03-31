@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ykfsdk_PointBottomView">
+        <!-- 被选中圆点的颜色 -->
+        <attr name="ykfsdk_fillColor" format="color" />
+        <!-- 未选中圆点的颜色 -->
+        <attr name="ykfsdk_strokeColor" format="color" />
+        <!-- 圆点的大小 -->
+        <attr name="ykfsdk_radius" format="dimension" />
+        <!-- 圆点间间距的大小 -->
+        <attr name="ykfsdk_circleInterval" format="dimension" />
+    </declare-styleable>
+    <!-- 默认主题颜色 -->
+    <attr name="ykfsdk_ykf_theme_color_default" format="color" /><!-- 主色调 -->
+    <attr name="ykfsdk_ykf_theme_color_default_light_1" format="color" />
+
+    <attr name="ykfsdk_ykf_theme_color_bg_default" format="color" /><!-- 默认背景 主色调 -->
+    <attr name="ykfsdk_ykf_theme_text_color_default" format="color" /><!--大部分文字 主色调 -->
+    <attr name="ykfsdk_ykf_theme_text_dark_default" format="color" />
+
+    <attr name="ykfsdk_ykf_theme_chat_activity_default" format="color" /><!--聊天页面的主色默认白-->
+    <attr name="ykfsdk_ykf_theme_chat_activity_bg_default" format="color" /><!--聊天页面的背景色默认 浅灰-->
+
+    <declare-styleable name="ykfsdk_CircleProgress">
+        <attr name="ykfsdk_circleProgress" format="integer"/> <!-- 进度0-100 -->
+        <attr name="ykfsdk_startAngle" format="integer"/> <!-- 开始的角度0-360 -->
+        <attr name="ykfsdk_circleCorner" format="dimension" /> <!-- 圆角 -->
+        <attr name="ykfsdk_backgroundColor" format="color"/> <!-- 背景的颜色 -->
+    </declare-styleable>
+
+
+    <declare-styleable name="ykfsdk_pickerview">
+        <attr name="ykfsdk_pickerview_gravity">
+            <enum name="center" value="17" />
+            <enum name="left" value="3" />
+            <enum name="right" value="5" />
+        </attr>
+        <attr name="ykfsdk_pickerview_textSize" format="dimension" />
+        <attr name="ykfsdk_pickerview_textColorOut" format="color" />
+        <attr name="ykfsdk_pickerview_textColorCenter" format="color" />
+        <attr name="ykfsdk_pickerview_dividerColor" format="color" />
+        <attr name="ykfsdk_pickerview_lineSpacingMultiplier" format="float" />
+    </declare-styleable>
+
+
+    <declare-styleable name="ykfsdk_SubsamplingScaleImageView">
+        <attr name="ykfsdk_src" format="reference" />
+        <attr name="ykfsdk_assetName" format="string" />
+        <attr name="ykfsdk_panEnabled" format="boolean" />
+        <attr name="ykfsdk_zoomEnabled" format="boolean" />
+        <attr name="ykfsdk_quickScaleEnabled" format="boolean" />
+        <attr name="ykfsdk_tileBackgroundColor" format="color" />
+    </declare-styleable>
+
+
+    <declare-styleable name="ykfsdk_StarRatingBar">
+        <attr name="ykfsdk_defaultStar" format="reference"/>
+        <attr name="ykfsdk_star" format="reference"/>
+        <attr name="ykfsdk_defaultStarColor" format="color"/>
+        <attr name="ykfsdk_starColor" format="color"/>
+        <attr name="ykfsdk_starNum" format="integer"/>
+        <attr name="ykfsdk_starStep" format="float"/>
+        <attr name="ykfsdk_starGap" format="dimension"/>
+        <attr name="ykfsdk_starSize" format="dimension"/>
+        <attr name="ykfsdk_rating" format="float"/>
+        <attr name="ykfsdk_isIndicator" format="boolean"/>
+    </declare-styleable>
+
+
+</resources>

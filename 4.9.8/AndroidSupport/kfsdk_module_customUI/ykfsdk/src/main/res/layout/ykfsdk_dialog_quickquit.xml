@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:background="@drawable/ykfsdk_kf_bg_white_corners"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            >
+
+            <TextView
+                android:id="@+id/tv_keep_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="1dp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.4"
+                android:text="@string/ykfsdk_queue_quit_content_keep"
+                android:textColor="@color/ykfsdk_color_151515"
+                android:textSize="16sp"
+                android:textStyle="bold">
+
+            </TextView>
+
+
+            <LinearLayout
+                android:id="@+id/ll_quickbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/tv_keep_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="26dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ykfsdk_kf_bg_coner_cancel"
+                    android:gravity="center"
+                    android:text="@string/ykfsdk_cancel"
+                    android:textColor="@color/ykfsdk_color_666666"
+                    android:textSize="15sp"></TextView>
+
+
+                <TextView
+                    android:id="@+id/tv_sure"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:background="@drawable/ykfsdk_kf_bg_quit_queue"
+                    android:gravity="center"
+                    android:text="@string/ykfsdk_ykf_determine"
+                    android:textColor="@color/ykfsdk_all_white"
+                    android:textSize="15sp"></TextView>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>
