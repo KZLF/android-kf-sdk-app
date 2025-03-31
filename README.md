@@ -16,7 +16,7 @@ repositories {
 Android Support 版本
 
 ```gradle
-implementation 'com.github.kzlf:android-ykf-sdk:version'
+implementation 'com.github.kzlf:android-ykf-sdk:version' // version 为指定的版本, 如 4.9.8
 ```
 
 AndroidX 版本
