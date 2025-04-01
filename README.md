@@ -18,5 +18,6 @@ repositories {
 ```
 
 ## 文档
-注意: 教程中提供的 Android Support Library 版本现已停止维护, 目前仅提供 AndroidX 版本.
+⚠️ 注意: 教程中提供的 Android Support Library 版本现已停止维护, 目前仅提供 AndroidX 版本.
+
 更详细的文档使用教程请参考仓库中 [安卓云客服SDK开发文档.pdf](https://github.com/KZLF/android-kf-sdk-demo/blob/main/安卓云客服SDK开发文档.pdf)
