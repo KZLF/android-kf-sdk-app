@@ -1,16 +1,7 @@
-## SDK 使用
-注: 此 SDK 包含 AndroidX 和 Android Support 版本.
+## SDK 使用注意
+此 SDK 包含 AndroidX 和 Android Support 版本.
 - kfsdk_module_AAR 依赖的 SDK 皆为已编译的版本, 无法自定义 UI
 - kfsdk_module_customUI 可以在 module ykfsdk 中自定义UI
-
-注: 仓库依赖 jitpack
-
-```gradle
-repositories {
-  mavenCentral()
-  maven { url 'https://jitpack.io' }
-}
-```
 
 如需在您的 App 中单独集成 SDK, 请直接安装 (注: 该版本无法自定义UI, 只能使用SDK默认)
 
@@ -24,6 +15,15 @@ AndroidX 版本
 
 ```gradle
 implementation 'com.github.kzlf:androidX-ykf-sdk:version'
+```
+
+注: 仓库依赖 jitpack
+
+```gradle
+repositories {
+  mavenCentral()
+  maven { url 'https://jitpack.io' }
+}
 ```
 
 ## 文档
