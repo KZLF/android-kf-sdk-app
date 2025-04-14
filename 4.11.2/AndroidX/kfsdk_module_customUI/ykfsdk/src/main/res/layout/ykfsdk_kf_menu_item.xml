@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_menu_head"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    >
+
+    <TextView
+        android:layout_marginRight="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="18dp"
+        android:id="@+id/tv_menu_title"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:textColor="@color/ykfsdk_default_menu_text"
+        android:gravity="center_vertical"
+        android:textSize="15sp"
+        android:singleLine="true"
+        tools:text="下拉" />
+
+    <ImageView
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/iv_menu_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+         />
+
+
+</RelativeLayout>

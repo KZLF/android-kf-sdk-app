@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/include_time"
+        layout="@layout/ykfsdk_ykf_chatitem_time" />
+
+    <RelativeLayout
+        android:id="@+id/chart_from_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/include_time"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:id="@+id/chatting_avatar_iv"
+            android:layout_width="@dimen/ykfsdk_head_avatar_size"
+            android:layout_height="@dimen/ykfsdk_head_avatar_size"
+            android:layout_marginLeft="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ykfsdk_kf_head_default_robot" />
+
+        <TextView
+            android:id="@+id/chatfrom_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/chatting_avatar_iv"
+            android:text="@string/ykfsdk_name"
+            android:textColor="@color/ykfsdk_all_black"
+            android:textSize="10sp"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/chat_from_layout_img"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_below="@id/chatfrom_tv_name"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_toEndOf="@id/chatting_avatar_iv"
+            android:layout_toRightOf="@id/chatting_avatar_iv">
+
+            <ImageView
+                android:id="@+id/chat_content_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ykfsdk_ykf_ic_playvideo"/>
+        </FrameLayout>
+    </RelativeLayout>
+
+    <include layout="@layout/ykfsdk_layout_chat_withdraw" />
+
+</RelativeLayout>

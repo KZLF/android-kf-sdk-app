@@ -1,0 +1,48 @@
+<resources>
+    <!--默认主题颜色 -->
+    <style name="ykfsdk_KFSdkAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="ykfsdk_ykf_theme_color_default">@color/ykfsdk_ykf_color_default</item>
+        <item name="ykfsdk_ykf_theme_color_default_light_1">
+            @color/ykfsdk_ykf_color_default_light_1
+        </item>
+        <item name="ykfsdk_ykf_theme_color_bg_default">@color/ykfsdk_ykf_color_bg_default</item>
+        <item name="ykfsdk_ykf_theme_text_color_default">
+            @color/ykfsdk_ykf_theme_text_color_default
+        </item>
+        <item name="ykfsdk_ykf_theme_text_dark_default">@color/ykfsdk_ykf_theme_text_dark_default
+        </item>
+        <item name="ykfsdk_ykf_theme_chat_activity_default">
+            @color/ykfsdk_ykf_chat_activity_default
+        </item>
+        <item name="ykfsdk_ykf_theme_chat_activity_bg_default">
+            @color/ykfsdk_ykf_chat_activity_bg_default
+        </item>
+        <item name="android:forceDarkAllowed">true</item>
+
+    </style>
+
+
+    <!--第二套主题颜色 -->
+    <style name="ykfsdk_KFSdkAppTheme1" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="ykfsdk_ykf_theme_color_default">@color/ykfsdk_ykf_color_default_1</item>
+        <item name="ykfsdk_ykf_theme_color_default_light_1">
+            @color/ykfsdk_ykf_color_default_1_light_1
+        </item>
+        <item name="ykfsdk_ykf_theme_color_bg_default">@color/ykfsdk_ykf_color_bg_default_1</item>
+        <item name="ykfsdk_ykf_theme_text_color_default">
+            @color/ykfsdk_ykf_theme_text_color_default_1
+        </item>
+        <item name="ykfsdk_ykf_theme_text_dark_default">
+            @color/ykfsdk_ykf_theme_text_dark_default_1
+        </item>
+        <item name="ykfsdk_ykf_theme_chat_activity_default">
+            @color/ykfsdk_ykf_chat_activity_default_1
+        </item>
+        <item name="ykfsdk_ykf_theme_chat_activity_bg_default">
+            @color/ykfsdk_ykf_chat_activity_bg_default_1
+        </item>
+        <item name="android:forceDarkAllowed">true</item>
+
+    </style>
+
+</resources>

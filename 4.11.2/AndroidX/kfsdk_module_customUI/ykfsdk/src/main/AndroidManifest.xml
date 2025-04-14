@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.m7.imkfsdk">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--麦克风-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--前台服务-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!--震动-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!--相机-->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+
+
+
+    <!--访问多媒体文件的权限 Android 10 上面使用的-->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
+    <application
+        android:allowBackup="false"
+        android:networkSecurityConfig="@xml/ykfsdk_network_security_config"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <!--  sdk内部providePath配置-->
+        <!--  通过app gradle中配置获取赋值 -->
+        <!--meta-data标签中的imkf_Provider值,要确保与provider标签中的authorities相同-->
+        <meta-data
+            android:name="imkf_Provider"
+            android:value="${IMKF_PROVIDER_PATH}" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}${IMKF_PROVIDER_PATH}"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/ykfsdk_file_paths" />
+        </provider>
+        <!--  sdk内部providePath配置-->
+
+
+        <activity
+            android:name="com.m7.imkfsdk.chat.ChatActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask" />
+        <activity
+            android:name="com.m7.imkfsdk.chat.OfflineMessageActicity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="com.m7.imkfsdk.chat.ScheduleOfflineMessageActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop" />
+
+        <activity
+            android:name="com.m7.imkfsdk.MoorWebCenter"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".chat.CommonQuestionsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".chat.YKFVideoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".chat.CommonDetailQuestionActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
+        <activity
+            android:name="com.m7.imkfsdk.view.imageviewer.MoorImagePreviewActivity"
+            android:theme="@style/ykfsdk_Theme.ImagePreview" />
+
+        <service
+            android:name="com.moor.imkf.SocketService"
+            android:exported="false"
+            android:priority="2147483646" />
+
+
+        <!--自己定义消息接收的广播-->
+        <receiver
+            android:name="com.m7.imkfsdk.receiver.NewMsgReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="com.m7.imkfsdk.KEFU_NEW_MSG" />
+            </intent-filter>
+        </receiver>
+
+
+
+    </application>
+
+</manifest>
