@@ -1,5 +1,6 @@
 package com.ykfsdk.app;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -21,6 +22,7 @@ import com.moor.imkf.model.entity.NewCardInfo;
 import com.moor.imkf.model.entity.NewCardInfoAttrs;
 import com.moor.imkf.model.entity.NewCardInfoTags;
 import com.moor.imkf.requesturl.RequestUrl;
+import com.moor.imkf.utils.MoorUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,12 +43,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final String userName = "";
     //用户id
     private final String userId = "";
+    //来源页面
+    private String fromPage = "订单详情页";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Intent intent = getIntent();
+        if(intent != null && intent.hasExtra("fromPage")) {
+            fromPage = intent.getStringExtra("fromPage");
+        }
         themeType = MoorSPUtils.getInstance().getInt(YKFConstants.SYSTHEME, 0);
         if (themeType == 0) {
             setTheme(com.m7.imkfsdk.R.style.ykfsdk_KFSdkAppTheme);
@@ -100,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          * RequestUrl.HUAWEI_REQUEST;//华为云环境
          */
         RequestUrl.setRequestBasic(RequestUrl.TENCENT_REQUEST);
+//        RequestUrl.setRequestBasic(RequestUrl.ALIYUN_REQUEST);
 
         /**
          * 3.2:
@@ -288,10 +297,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             JSONObject object = new JSONObject();
             object.put("test05", "test05");
-
+            object.put("test04", "test04");
+            //操作系统 版本号+设备型号
+            object.put("navigator", "Android " + Build.VERSION.RELEASE
+                    + "|"
+                    + MoorUtils.getDeviceModel().replaceAll("[|]",""));
+            //来源页面
+            object.put("fromUrl", fromPage);
 
             JSONObject userlabel = new JSONObject();
-//            userlabel.put("userlabel1", "userlabel1");
+            userlabel.put("userlabel1", "userlabel1");
 
             IMChatManager.getInstance().setUserOtherParams("", object, true, userlabel);
         } catch (JSONException e) {
