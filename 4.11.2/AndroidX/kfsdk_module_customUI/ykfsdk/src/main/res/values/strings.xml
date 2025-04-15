@@ -40,7 +40,7 @@
     <string name="ykfsdk_people_not_online">当前客服不在线</string>
     <string name="ykfsdk_people_now">当前是客服为你服务</string>
     <string name="ykfsdk_people_isleave">客服结束会话</string>
-    <string name="ykfsdk_chat_img">图库</string>
+    <string name="ykfsdk_chat_img">相册</string>
     <string name="ykfsdk_chat_takeimg">拍摄</string>
     <string name="ykfsdk_chat_evaluate">评价</string>
     <string name="ykfsdk_chat_question">常见问题</string>
@@ -201,6 +201,7 @@
     <string name="ykfsdk_ykf_has_been_upload_tips">上传中...</string>
     <string name="ykfsdk_ykf_bottomdialog_title">提示</string>
     <string name="ykfsdk_ykf_chatactivity_isfinish">聊天页面已关闭,请重新开启咨询</string>
+    <string name="ykfsdk_ykf_leave_message_tip_default">客服不在线，您可以先</string>
 
     <string name="ykfsdk_ykf_dialog_exist_video">正在通话中，离开此页面会挂断通话，您确定要离开吗？</string>
     <string name="ykfsdk_chat_video_call">视频通话</string>

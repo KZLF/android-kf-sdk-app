@@ -46,12 +46,17 @@ public class ChatTagLabelsAdapter extends RecyclerView.Adapter<ChatTagLabelsAdap
 
     @Override
     public void onBindViewHolder(ChatTagViewHolder holder, final int position) {
-        holder.tvFlowItem.setText(datas.get(position).getButton());
+        final FlowBean data = datas.get(position);
+        holder.tvFlowItem.setText(data.getButton());
+        holder.itemView.setBackgroundResource(data.getBadge_flag() == 1
+                ? R.drawable.ykfsdk_kf_chat_bottom_button_enhanced
+                : R.drawable.ykfsdk_kf_chat_input_bg);
+        holder.vDot.setVisibility(data.getBadge_flag() == 1 ? View.VISIBLE : View.GONE);
         holder.tvFlowItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.OnItemClick(datas.get(position));
+                    mListener.OnItemClick(data);
                 }
             }
         });
@@ -64,10 +69,12 @@ public class ChatTagLabelsAdapter extends RecyclerView.Adapter<ChatTagLabelsAdap
 
     static class ChatTagViewHolder extends RecyclerView.ViewHolder {
         TextView tvFlowItem;
+        View vDot;
 
         public ChatTagViewHolder(View itemView) {
             super(itemView);
             tvFlowItem = itemView.findViewById(R.id.tv_flowItem);
+            vDot = itemView.findViewById(R.id.v_flow_item_dot);
         }
     }
 

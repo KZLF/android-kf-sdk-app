@@ -8,10 +8,13 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 
+import com.moor.imkf.utils.LogUtils;
+
 import org.xml.sax.XMLReader;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * @ClassName HtmlTagHandler
@@ -25,11 +28,11 @@ public class HtmlTagHandler implements Html.TagHandler {
     private final String tagName;
 
     // 标签开始索引
-    private int startIndex = 0;
+    private Stack<Integer> startIndex = new Stack<>();
     // 标签结束索引
-    private int endIndex = 0;
+    private Stack<Integer> endIndex = new Stack<>();
     // 存放标签所有属性键值对
-    final HashMap<String, String> attributes = new HashMap<>();
+    final HashMap<String, Stack<String>> attributes = new HashMap<>();
 
     public HtmlTagHandler(String tagName) {
         this.tagName = tagName;
@@ -51,28 +54,52 @@ public class HtmlTagHandler implements Html.TagHandler {
     }
 
     public void startHandleTag(String tag, Editable output, XMLReader xmlReader) {
-        startIndex = output.length();
+        LogUtils.dTag("startHandleTag","startIndexBefore:" + startIndex);
+        startIndex.push(output.length());
+        LogUtils.dTag("startHandleTag","startIndexAfter:" + startIndex);
     }
 
     public void endEndHandleTag(String tag, Editable output, XMLReader xmlReader) {
-        endIndex = output.length();
+        LogUtils.dTag("endEndHandleTag","endIndexBefore:" + endIndex);
+        int currElementStartIndex = startIndex.peek();
+        //处理连续的标签
+        //例如<li><font color=\"#808080\"><font color=\"#000000\">显示评价征集 <\/font>写优质评价赢多重好礼<\/font><\/li>
+        if(endIndex.size() == startIndex.size()) {
+            startIndex.pop();
+            currElementStartIndex = endIndex.pop();
+        } else {
+            startIndex.pop();
+        }
+        endIndex.push(output.length());
+        LogUtils.dTag("endEndHandleTag","endIndexAfter:" + endIndex);
 
         // 获取对应的属性值
-        String color = attributes.get("color");
-        String size = attributes.get("size");
+        Stack<String> color = attributes.get("color");
+        Stack<String> size = attributes.get("size");
 //        size = size.split("px")[0];
-
+        int currElementEndIndex = endIndex.peek();
+        LogUtils.dTag("endEndHandleTag","startIndex:" + currElementStartIndex,"endIndex:" + currElementEndIndex,"output:" + output,"color:" + color);
+        boolean hasMultiple = false;
         // 设置颜色
-        if (!TextUtils.isEmpty(color)) {
-            output.setSpan(new ForegroundColorSpan(Color.parseColor(color)), startIndex, endIndex,
+        if (color != null && !color.empty()) {
+            if(color.size() > 1) {
+                hasMultiple = true;
+            }
+            output.setSpan(new ForegroundColorSpan(Color.parseColor(color.pop())), currElementStartIndex, currElementEndIndex,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         // 设置字体大小
-        if (!TextUtils.isEmpty(size)) {
-            output.setSpan(new AbsoluteSizeSpan(displaySize(size), true), startIndex, endIndex,
+        if (size != null && !size.empty()) {
+            if(size.size() > 1) {
+                hasMultiple = true;
+            }
+            output.setSpan(new AbsoluteSizeSpan(displaySize(size.pop()), true), currElementStartIndex, currElementEndIndex,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-        attributes.clear();
+        //如果是连续标签，则把endIndex保留到下次startIndex使用
+        if(!hasMultiple) {
+            endIndex.pop();
+        }
     }
 
     /**
@@ -96,7 +123,15 @@ public class HtmlTagHandler implements Html.TagHandler {
             int len = (Integer) lengthField.get(atts);
 
             for (int i = 0; i < len; i++) {
-                attributes.put(data[i * 5 + 1], data[i * 5 + 4]);
+                String key = data[i * 5 + 1];
+                String value = data[i * 5 + 4];
+                LogUtils.dTag("parseAttributes","key:" + key, "value:" + value,"this:" + this);
+                Stack<String> values = attributes.get(key);
+                if(values == null) {
+                    values = new Stack<>();
+                    attributes.put(key, values);
+                }
+                values.push(value);
             }
         } catch (Exception e) {
 

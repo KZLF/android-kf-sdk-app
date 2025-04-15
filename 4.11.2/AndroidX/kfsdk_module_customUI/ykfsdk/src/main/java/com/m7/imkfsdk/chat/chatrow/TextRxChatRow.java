@@ -52,6 +52,7 @@ import com.m7.imkfsdk.utils.AnimatedImageSpan;
 import com.m7.imkfsdk.utils.DensityUtil;
 import com.m7.imkfsdk.utils.FIleResourceUtil;
 import com.m7.imkfsdk.utils.HtmlTagHandler;
+import com.m7.imkfsdk.utils.HtmlTagHandlers;
 import com.m7.imkfsdk.utils.ImageHeightCache;
 import com.m7.imkfsdk.utils.RegexUtils;
 import com.m7.imkfsdk.utils.ToastUtils;
@@ -99,6 +100,9 @@ import java.util.regex.Pattern;
 
 public class TextRxChatRow extends BaseChatRow {
     private final String MoorFontSizeTag = "moorFont";//用于转换标签支持字号
+    private final String MoorUl = "moorUl";//用于转换标签支持字号
+    private final String MoorLi = "moorLi";//用于转换标签支持字号
+    private final String MoorOl = "moorOl";//用于转换标签支持字号
     private final String ActionrobotTransferAgent = "moor_moor_m7_actionrobotTransferAgent.m7_data:";
     private final String ActiondatapPhoneHref = "moor_moor_m7_actiondata-phone-href.m7-data-tel:";
     private final String ActionXbotQuickQuestion = "moor_moor_m7_actionXbotQuickQuestionData.m7_data:";
@@ -142,6 +146,7 @@ public class TextRxChatRow extends BaseChatRow {
 
     @Override
     protected void buildChattingData(final Context context, BaseHolder baseHolder, final FromToMessage detail, int position) {
+        LogUtils.dTag("buildChattingData","msgType:" + detail.msgType,"message:" + detail.message);
         this.context = context;
         final TextViewHolder holder = (TextViewHolder) baseHolder;
         if (detail != null) {
@@ -629,11 +634,17 @@ public class TextRxChatRow extends BaseChatRow {
                                         String actionmsg = setA_String(strings[i]);
                                         actionmsg = actionmsg.replaceAll("<font", "<" + MoorFontSizeTag);
                                         actionmsg = actionmsg.replaceAll("</font>", "</" + MoorFontSizeTag + ">");
+                                        actionmsg = actionmsg.replaceAll("<ul", "<" + MoorUl);
+                                        actionmsg = actionmsg.replaceAll("</ul>", "</" + MoorUl + ">");
+                                        actionmsg = actionmsg.replaceAll("<li", "<" + MoorLi);
+                                        actionmsg = actionmsg.replaceAll("</li>", "</" + MoorLi + ">");
+                                        actionmsg = actionmsg.replaceAll("<ol", "<" + MoorOl);
+                                        actionmsg = actionmsg.replaceAll("</ol>", "</" + MoorOl + ">");
                                         Spanned string;
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                            string = Html.fromHtml(actionmsg, Html.FROM_HTML_MODE_COMPACT, null, new HtmlTagHandler(MoorFontSizeTag));
+                                            string = Html.fromHtml(actionmsg, Html.FROM_HTML_MODE_COMPACT, null, new HtmlTagHandlers());
                                         } else {
-                                            string = Html.fromHtml(actionmsg, null, new HtmlTagHandler(MoorFontSizeTag));
+                                            string = Html.fromHtml(actionmsg, null, new HtmlTagHandlers());
                                         }
 
                                         Spanned string_o = new SpannableStringBuilder(MoorUtils.trimTrailingWhitespace(string));
@@ -1206,12 +1217,18 @@ public class TextRxChatRow extends BaseChatRow {
 
         msg = msg.replaceAll("<font", "<" + MoorFontSizeTag);
         msg = msg.replaceAll("</font>", "</" + MoorFontSizeTag + ">");
+        msg = msg.replaceAll("<ul", "<" + MoorUl);
+        msg = msg.replaceAll("</ul>", "</" + MoorUl + ">");
+        msg = msg.replaceAll("<li", "<" + MoorLi);
+        msg = msg.replaceAll("</li>", "</" + MoorLi + ">");
+        msg = msg.replaceAll("<ol", "<" + MoorOl);
+        msg = msg.replaceAll("</ol>", "</" + MoorOl + ">");
 
         Spanned string;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            string = Html.fromHtml(msg, Html.FROM_HTML_MODE_COMPACT, null, new HtmlTagHandler(MoorFontSizeTag));
+            string = Html.fromHtml(msg, Html.FROM_HTML_MODE_COMPACT, null, new HtmlTagHandlers());
         } else {
-            string = Html.fromHtml(msg, null, new HtmlTagHandler(MoorFontSizeTag));
+            string = Html.fromHtml(msg, null, new HtmlTagHandlers());
         }
         SpannableStringBuilder spannableString = new SpannableStringBuilder(MoorUtils.trimTrailingWhitespace(string));
         spannableString = getClickableHtml(spannableString);

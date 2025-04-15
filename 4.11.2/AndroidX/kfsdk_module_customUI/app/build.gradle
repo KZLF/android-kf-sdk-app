@@ -9,7 +9,7 @@ android {
         minSdkVersion minVersion
         targetSdkVersion targetVersion
         versionCode 1
-        versionName "4.9.8"
+        versionName "4.11.2"
 
         /**
          * IMKF内部使用的PROVIDER_PATH路径
@@ -17,7 +17,6 @@ android {
         manifestPlaceholders.put("IMKF_PROVIDER_PATH", ".fileprovider")
 
         ndk {
-            // 设置客服支持的SO库架构
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86'
         }
     }
@@ -51,8 +50,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
 
-
-    //ykfsdk 客服module
     implementation project(path: ':ykfsdk')
 
     //(demo配置,根据需要自行选择所需要的图片加载框架,参考demo GlideImageLoader) glide

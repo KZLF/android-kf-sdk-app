@@ -289,8 +289,10 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
      * 处理各类消息
      */
     public void handleMessage(Message msg, StringBuilder fullResult) {
+        LogUtils.dTag("handleMessage==", "msg.what:" + msg.what);
         if (msg.what == HANDLER_MSG) {
             updateMessage();    // 这里就会刷新数据。
+            setChatInviteBtn();
         } else if (msg.what == HANDLER_MSG_MORE) {
             // 加载更多的时候
             JZMoreMessage();
@@ -464,6 +466,7 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
                                     mChatEdittextLayout.setVisibility(View.VISIBLE);
                                     mRecorderButton.setVisibility(View.GONE);
                                     voiceAndTextBtnVisibility(serviceShowVoice, true, false);
+                                    setButtonVisible((PanelView)view);
                                 }
                                 mChatMore.setSelected(selected);
                             }
@@ -859,16 +862,16 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
             startReStartDialog();
             return;
         }
-
-        //访客没发过消息，显示评论按钮。 2 访客发过消息后，就不再校验了。
-        if (IMChatManager.getInstance().getYkfChatStatusEnum() == YKFChatStatusEnum.KF_Robot_Status && !hasSendRobotMsg) {
-            hasSendRobotMsg = true;
-            setChatInviteBtn();
-        }
-        if (IMChatManager.getInstance().getYkfChatStatusEnum() != YKFChatStatusEnum.KF_Robot_Status && !hasSendPersonMsg) {
-            hasSendPersonMsg = true;
-            setChatInviteBtn();
-        }
+        //统一在sendMsgToServer处理
+//        //访客没发过消息，显示评论按钮。 2 访客发过消息后，就不再校验了。
+//        if (IMChatManager.getInstance().getYkfChatStatusEnum() == YKFChatStatusEnum.KF_Robot_Status && !hasSendRobotMsg) {
+//            hasSendRobotMsg = true;
+//            setChatInviteBtn();
+//        }
+//        if (IMChatManager.getInstance().getYkfChatStatusEnum() != YKFChatStatusEnum.KF_Robot_Status && !hasSendPersonMsg) {
+//            hasSendPersonMsg = true;
+//            setChatInviteBtn();
+//        }
         FromToMessage fromToMessage = IMMessage.createTxtMessage(msgStr);
         //界面显示
         sendSingleMessage(fromToMessage);
@@ -904,7 +907,7 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
         Iterator<FromToMessage> iterator = fromToMessage.iterator();
         while (iterator.hasNext()) {
             FromToMessage msg = iterator.next();
-
+            LogUtils.dTag("updateMessage","msg.message:" + msg.message);
             if (FromToMessage.MSG_TYPE_NEW_CARD.equals(msg.msgType)) {
                 //不显示newcardinfo配置自动发送类型的样式
                 Type token = new TypeToken<NewCardInfo>() {
@@ -1119,6 +1122,7 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
             if (MoorAntiShakeUtils.getInstance().check()) {
                 return;
             }
+            mHelper.resetState();
             TransferAgent transferAgent = new TransferAgent();
             transferAgent.type = "14";
             onEventMainThread(transferAgent);
@@ -1616,6 +1620,61 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
         });
     }
 
+    private void createAndSendFileMessage(String path) {
+        File file = new File(path);
+        String fileSizeStr = "";
+        if (file.exists()) {
+            long fileSize = file.length();
+            if ((fileSize / 1024 / 1024) > 200.0) {
+                //大于200M不能上传
+                Toast.makeText(ChatActivity.this, getString(R.string.ykfsdk_sendfiletoobig) + "200MB", Toast.LENGTH_SHORT).show();
+            } else {
+                fileSizeStr = FileUtils.formatFileLength(fileSize);
+                String fileName = path.substring(path.lastIndexOf("/") + 1);
+                FromToMessage fromToMessage = null;
+
+                String lowerCase = fileName.toLowerCase();
+
+                GlobalSet globalSet = GlobalSetDao.getInstance().getGlobalSet();
+                if (globalSet != null) {
+                    if (!TextUtils.isEmpty(globalSet.globalUploadBlackList)) {
+                        String[] blackList = globalSet.globalUploadBlackList.split(",");
+                        for (String s : blackList) {
+                            if (lowerCase.endsWith(s)) {
+                                ToastUtils.showShort(ChatActivity.this, getString(R.string.ykfsdk_black_upload_type));
+                                return;
+                            }
+                        }
+                    }
+
+                    if (!checkWhiteList(globalSet, lowerCase)) {
+                        ToastUtils.showShort(ChatActivity.this, getString(R.string.ykfsdk_not_upload_type));
+                        return;
+                    }
+                }
+
+
+                if (MoorUtils.fileIsImage(fileName)) {
+                    //发送图片文件
+                    fromToMessage = IMMessage.createImageMessage(path);
+                } else if (MoorUtils.fileIsVideo(fileName)) {
+                    //发送视频文件
+                    fromToMessage = IMMessage.createFileIsVideoMessage(path, fileName, fileSizeStr, getString(R.string.ykfsdk_ykf_has_been_upload_tips));
+                } else {
+                    //发送文件
+                    fromToMessage = IMMessage.createFileMessage(path, fileName, fileSizeStr, getString(R.string.ykfsdk_ykf_has_been_upload_tips));
+                }
+
+                ArrayList fromTomsgs = new ArrayList<FromToMessage>();
+                fromTomsgs.add(fromToMessage);
+                descFromToMessage.addAll(fromTomsgs);
+                chatAdapter.notifyDataSetChanged();
+                scrollToBottom();
+                sendMsgToServer(fromToMessage);
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1624,10 +1683,15 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
                 Uri uri = data.getData();
                 if (uri != null) {
                     String realPath = PickUtils.getPath(ChatActivity.this, uri);
-                    Log.d("发送图片消息了", "图片的本地路径是：" + realPath);
-                    createAndSendImgMsg(realPath);
+                    if(MoorUtils.fileIsImage(realPath)) {
+                        Log.d("发送图片消息了", "图片的本地路径是：" + realPath);
+                        createAndSendImgMsg(realPath);
+                    } else if(MoorUtils.fileIsVideo(realPath)) {
+                        Log.d("发送视频消息了", "视频的本地路径是：" + realPath);
+                        createAndSendFileMessage(realPath);
+                    }
                 } else {
-                    Log.e(tag, "从相册获取图片失败");
+                    Log.e(tag, "从相册获取图片/视频失败");
                 }
             }
         } else if (requestCode == MoorDemoConstants.PICK_FILE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
@@ -1637,58 +1701,7 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
                 Toast.makeText(ChatActivity.this, getString(R.string.ykfsdk_ykf_not_support_file), Toast.LENGTH_SHORT).show();
                 return;
             }
-            File file = new File(path);
-            String fileSizeStr = "";
-            if (file.exists()) {
-                long fileSize = file.length();
-                if ((fileSize / 1024 / 1024) > 200.0) {
-                    //大于200M不能上传
-                    Toast.makeText(ChatActivity.this, getString(R.string.ykfsdk_sendfiletoobig) + "200MB", Toast.LENGTH_SHORT).show();
-                } else {
-                    fileSizeStr = FileUtils.formatFileLength(fileSize);
-                    String fileName = path.substring(path.lastIndexOf("/") + 1);
-                    FromToMessage fromToMessage = null;
-
-                    String lowerCase = fileName.toLowerCase();
-
-                    GlobalSet globalSet = GlobalSetDao.getInstance().getGlobalSet();
-                    if (globalSet != null) {
-                        if (!TextUtils.isEmpty(globalSet.globalUploadBlackList)) {
-                            String[] blackList = globalSet.globalUploadBlackList.split(",");
-                            for (String s : blackList) {
-                                if (lowerCase.endsWith(s)) {
-                                    ToastUtils.showShort(ChatActivity.this, getString(R.string.ykfsdk_black_upload_type));
-                                    return;
-                                }
-                            }
-                        }
-
-                        if (!checkWhiteList(globalSet, lowerCase)) {
-                            ToastUtils.showShort(ChatActivity.this, getString(R.string.ykfsdk_not_upload_type));
-                            return;
-                        }
-                    }
-
-
-                    if (MoorUtils.fileIsImage(fileName)) {
-                        //发送图片文件
-                        fromToMessage = IMMessage.createImageMessage(path);
-                    } else if (MoorUtils.fileIsVideo(fileName)) {
-                        //发送视频文件
-                        fromToMessage = IMMessage.createFileIsVideoMessage(path, fileName, fileSizeStr, getString(R.string.ykfsdk_ykf_has_been_upload_tips));
-                    } else {
-                        //发送文件
-                        fromToMessage = IMMessage.createFileMessage(path, fileName, fileSizeStr, getString(R.string.ykfsdk_ykf_has_been_upload_tips));
-                    }
-
-                    ArrayList fromTomsgs = new ArrayList<FromToMessage>();
-                    fromTomsgs.add(fromToMessage);
-                    descFromToMessage.addAll(fromTomsgs);
-                    chatAdapter.notifyDataSetChanged();
-                    scrollToBottom();
-                    sendMsgToServer(fromToMessage);
-                }
-            }
+            createAndSendFileMessage(path);
         } else if (requestCode == MoorDemoConstants.CAMERA_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 //发送图片
@@ -1763,7 +1776,6 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
         scrollToBottom();
         sendMsgToServer(fromToMessage);
     }
-
 
     /**
      * 覆盖手机返回键
@@ -2012,19 +2024,30 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
      */
     private void setChatInviteBtn() {
         showOrHideInviteButton(false);
+        //判断是小莫还是xbot
+        GlobalSet globalSet = GlobalSetDao.getInstance().getGlobalSet();
         NotAllowCustomerPushCsr = MoorSPUtils.getInstance().getBoolean(YKFConstants.NOT_ALLOWCUSTOMER_PUSH_CSR, false);
+        boolean appraiseTurnLimit = MoorSPUtils.getInstance().getBoolean(YKFConstants.APPRAISE_TURN_LIMIT, false);
+        int appraiseTurnLimitNum = MoorSPUtils.getInstance().getInt(YKFConstants.APPRAISE_TURN_LIMIT_NUM, 0);
+        boolean isNotTurnLimit = !appraiseTurnLimit
+                || (!descFromToMessage.isEmpty()
+                    && descFromToMessage.get(descFromToMessage.size()-1).agentRoundCount >= appraiseTurnLimitNum)
+                || (descFromToMessage.isEmpty() && appraiseTurnLimitNum == 0);
         //人工，开启了评价,坐席发过消息、会话存在，访客发过消息，没有评价过,配置了满意度列表
-        if (IMChatManager.getInstance().getYkfChatStatusEnum() == YKFChatStatusEnum.KF_Claim_Status && IMChatManager.getInstance().isInvestigateOn() && convesationIsLive && isZXResply &&
-                isInvestigate && hasSet && hasSendPersonMsg && !NotAllowCustomerPushCsr) {
+        if (IMChatManager.getInstance().getYkfChatStatusEnum() == YKFChatStatusEnum.KF_Claim_Status
+                && IMChatManager.getInstance().isInvestigateOn()
+                && convesationIsLive && isZXResply && isInvestigate
+                && hasSet && hasSendPersonMsg && !NotAllowCustomerPushCsr
+                && isNotTurnLimit
+        ) {
             //展示评价按钮
             showOrHideInviteButton(true);
         }
-        //判断是小莫还是xbot
-        GlobalSet globalSet = GlobalSetDao.getInstance().getGlobalSet();
         // 如果是机器人，并且还未评价过,并且已经发送过消息
-        if (globalSet != null && IMChatManager.getInstance().getYkfChatStatusEnum() == YKFChatStatusEnum.KF_Robot_Status && !robotEvaluationFinish && hasSendRobotMsg) {
+        if (globalSet != null && IMChatManager.getInstance().getYkfChatStatusEnum() == YKFChatStatusEnum.KF_Robot_Status
+                && !robotEvaluationFinish && hasSendRobotMsg) {
             if ("xbot".equals(globalSet.robotType)) {
-                if (IMChatManager.getInstance().getYkfChatStatusEnum() == YKFChatStatusEnum.KF_Robot_Status && !robotEvaluationFinish && hasSendRobotMsg && IMChat.getInstance().getBotsatisfaOn()) {
+                if (IMChat.getInstance().getBotsatisfaOn()) {
                     showOrHideInviteButton(true);
                 }
             } else {
@@ -2214,9 +2237,15 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
             } else {
                 bar_bottom.setVisibility(View.GONE);
             }
-            String alertTitle = globalSet.inviteLeavemsgTip;
+            String alertTitle = globalSet.clientLeavemsgTip;//现在用这个字段
             if (TextUtils.isEmpty(alertTitle)) {
-                alertTitle = NullUtil.checkNull(globalSet.msg);
+                //兼容老数据
+                alertTitle = globalSet.inviteLeavemsgTip;
+            }
+            if (TextUtils.isEmpty(alertTitle)) {
+                //都没有配置则默认显示：客服不在线，您可以先
+                alertTitle = getString(R.string.ykfsdk_ykf_leave_message_tip_default);
+//                alertTitle = NullUtil.checkNull(globalSet.msg);
             }
             if ("1".equals(NullUtil.checkNull(globalSet.isLeaveMsg))) {
 
@@ -2879,6 +2908,15 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
      * @param message
      */
     private void sendMsgToServer(final FromToMessage message) {
+        //访客没发过消息，显示评论按钮。 2 访客发过消息后，就不再校验了。
+        if (IMChatManager.getInstance().getYkfChatStatusEnum() == YKFChatStatusEnum.KF_Robot_Status && !hasSendRobotMsg) {
+            hasSendRobotMsg = true;
+            setChatInviteBtn();
+        }
+        if (IMChatManager.getInstance().getYkfChatStatusEnum() != YKFChatStatusEnum.KF_Robot_Status && !hasSendPersonMsg) {
+            hasSendPersonMsg = true;
+            setChatInviteBtn();
+        }
         IMChat.getInstance().sendMessage(message, new ChatListener() {
             @Override
             public void onSuccess(String msg) {
@@ -3166,6 +3204,35 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
         }
     }
 
+    private void setButtonVisible(View ll_question,View ll_takepic,View ll_photo,View ll_file) {
+        boolean isRobot = YKFChatStatusEnum.KF_Robot_Status.equals(IMChatManager.getInstance().getYkfChatStatusEnum());
+        LogUtils.d("isRobot",isRobot);
+        GlobalSet globalSet = GlobalSetDao.getInstance().getGlobalSet();
+        //常见问题按钮是否显示-来自服务端配置
+        boolean showQuestionButton = isRobot ? globalSet.showIssueButtonByRobot : globalSet.showIssueButton;
+        ll_question.setVisibility(showQuestionButton ? View.VISIBLE : View.GONE);
+
+        //拍照按钮是否显示-来自服务端配置
+        boolean showTakePicButton = isRobot ? globalSet.showPhotoButtonByRobot : globalSet.showPhotoButton;
+        ll_takepic.setVisibility(showTakePicButton ? View.VISIBLE : View.GONE);
+
+        //图库按钮是否显示-来自服务端配置
+        boolean showPhotoButton = isRobot ? globalSet.showGalleryButtonByRobot : globalSet.showGalleryButton;
+        ll_photo.setVisibility(showPhotoButton ? View.VISIBLE : View.GONE);
+
+        //附件按钮是否显示-来自服务端配置
+        boolean showFileButton = isRobot ? globalSet.showFileButtonByRobot : globalSet.showFileButton;
+        ll_file.setVisibility(showFileButton ? View.VISIBLE : View.GONE);
+    }
+
+    private void setButtonVisible(PanelView panelView) {
+        LinearLayout ll_takepic = panelView.findViewById(R.id.ll_takepic);
+        LinearLayout ll_photo = panelView.findViewById(R.id.ll_photo);
+        LinearLayout ll_file = panelView.findViewById(R.id.ll_file);
+        LinearLayout ll_question = panelView.findViewById(R.id.ll_question);
+        setButtonVisible(ll_question,ll_takepic,ll_photo,ll_file);
+    }
+
     /**
      * 拍照，图库、文件、评价、常见问题按钮功能
      */
@@ -3176,25 +3243,7 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
         ll_invite = panelView.findViewById(R.id.ll_invite);
         LinearLayout ll_question = panelView.findViewById(R.id.ll_question);
         LinearLayout ll_video = panelView.findViewById(R.id.ll_video);
-
-
-        GlobalSet globalSet = GlobalSetDao.getInstance().getGlobalSet();
-        //常见问题按钮是否显示-来自服务端配置
-        boolean showQuestionButton = globalSet.showIssueButton;
-        ll_question.setVisibility(showQuestionButton ? View.VISIBLE : View.GONE);
-
-        //拍照按钮是否显示-来自服务端配置
-        boolean showTakePicButton = globalSet.showPhotoButton;
-        ll_takepic.setVisibility(showTakePicButton ? View.VISIBLE : View.GONE);
-
-        //图库按钮是否显示-来自服务端配置
-        boolean showPhotoButton = globalSet.showGalleryButton;
-        ll_photo.setVisibility(showPhotoButton ? View.VISIBLE : View.GONE);
-
-        //附件按钮是否显示-来自服务端配置
-        boolean showFileButton = globalSet.showFileButton;
-        ll_file.setVisibility(showFileButton ? View.VISIBLE : View.GONE);
-
+        setButtonVisible(ll_question,ll_takepic,ll_photo,ll_file);
 
         ll_takepic.setOnClickListener(new OnClickListener() {
             @Override
@@ -3369,18 +3418,22 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
     }
 
     /**
-     * 打开本地相册
+     * 打开本地相册。支持图片和视频
      */
     public void openAlbum() {
+        String mimeTypes = "image/*;video/mp4;video/f4v;video/m4v;video/mkv;" +
+                "video/mov;video/webm;video/avi;video/wmv;video/flv;" +
+                "video/3gp;video/rm;video/rmvb";
         Intent intentFromGallery = new Intent(Intent.ACTION_PICK, null);
-        intentFromGallery.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        intentFromGallery.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,mimeTypes);
         List<ResolveInfo> resolveInfos = getPackageManager().queryIntentActivities(intentFromGallery
                 , PackageManager.MATCH_DEFAULT_ONLY);
         if (resolveInfos.size() != 0) {
             startActivityForResult(intentFromGallery, MoorDemoConstants.PICK_IMAGE_ACTIVITY_REQUEST_CODE);
         } else {
             Intent intentFromContent = new Intent(Intent.ACTION_GET_CONTENT, null);
-            intentFromContent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+            intentFromContent.setDataAndType(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mimeTypes);
             startActivityForResult(intentFromContent, MoorDemoConstants.PICK_IMAGE_ACTIVITY_REQUEST_CODE);
 //            ToastUtils.showShort(this, getString(R.string.ykfsdk_ykf_no_imagepick));
         }
@@ -3641,6 +3694,7 @@ public class ChatActivity extends KFBaseActivity implements OnClickListener
                         flowBean.setButton(jb.getString("button"));
                         flowBean.setText(jb.getString("text"));
                         flowBean.setButton_type(jb.optInt("button_type"));
+                        flowBean.setBadge_flag(jb.optInt("badge_flag"));
                         flowBeanList.add(flowBean);
                     }
                     ChatTagLabelsAdapter adapter = new ChatTagLabelsAdapter(flowBeanList);

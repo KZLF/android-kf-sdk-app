@@ -10,8 +10,10 @@ buildscript {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        // 阿里云云效仓库：https://maven.aliyun.com/mvn/guide
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/google' }
+        // 华为开源镜像：https://mirrors.huaweicloud.com
         maven { url 'https://repo.huaweicloud.com/repository/maven' }
     }
 
@@ -25,8 +27,13 @@ allprojects {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+        //视频依赖库需要
+//        maven { url "https://raw.githubusercontents.com/7moor-tech/video-call-sdk/master" }
+        // 阿里云云效仓库：https://maven.aliyun.com/mvn/guide
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/google' }
+        // 华为开源镜像：https://mirrors.huaweicloud.com
         maven { url 'https://repo.huaweicloud.com/repository/maven' }
     }
 }

@@ -152,6 +152,7 @@
     <string name="ykfsdk_satisfy_title_name">Service evaluation</string>
     <string name="ykfsdk_ykf_confirm">confirm</string>
     <string name="ykfsdk_ykf_please_edit_complete">Please fill in</string>
+    <string name="ykfsdk_ykf_leave_message_tip_default">Customer service is not online, you can</string>
 
     <string name="ykfsdk_pickerview_year">year</string>
     <string name="ykfsdk_pickerview_month">month</string>
